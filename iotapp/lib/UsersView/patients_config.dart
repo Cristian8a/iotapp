@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:iotapp/auths/login.dart';
 
-class Configuration extends StatefulWidget {
-  const Configuration({Key? key}) : super(key: key);
+class PatientsConfiguration extends StatefulWidget {
+  const PatientsConfiguration({Key? key}) : super(key: key);
 
   @override
   _ConfigurationState createState() => _ConfigurationState();
 }
 
-class _ConfigurationState extends State<Configuration> {
+class _ConfigurationState extends State<PatientsConfiguration> {
   bool isConnected = false;
 
   @override
@@ -38,7 +39,7 @@ class _ConfigurationState extends State<Configuration> {
             padding: const EdgeInsets.all(60.0),
             child: Container(
               width: 380,
-              height: 600,
+              height: 650,
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
@@ -173,32 +174,66 @@ class _ConfigurationState extends State<Configuration> {
                           SizedBox(
                             height: 30,
                           ),
-                          SizedBox(
-                            width: 300,
-                            height: 100,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                  ..hideCurrentSnackBar()
-                                  ..showSnackBar(SnackBar(
-                                    content: Text("Configuration saved!"),
-                                  ));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.blue[900],
-                                textStyle:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Radio de los bordes
+                          Column(
+                            children: [
+                              SizedBox(
+                                width: 300,
+                                height: 100,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(SnackBar(
+                                        content: Text("Configuration saved!"),
+                                      ));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.blue[900],
+                                    textStyle:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          10.0), // Radio de los bordes
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Done',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
                                 ),
                               ),
-                              child: Text(
-                                'Done',
-                                style: TextStyle(fontSize: 20),
+                              SizedBox(
+                                height: 10,
                               ),
-                            ),
+                              SizedBox(
+                                width: 100,
+                                height: 40,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context) // Cerrar sesión
+                                        .pushReplacement(MaterialPageRoute(
+                                            builder: (context) => LoginPage()));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.blue[900],
+                                    textStyle:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          10.0), // Radio de los bordes
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'LogOut',
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

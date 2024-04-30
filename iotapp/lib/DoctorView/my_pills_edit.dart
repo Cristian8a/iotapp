@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:iotapp/providers/pills_provider.dart';
-import 'package:provider/provider.dart';
 
 class MyPillsEdit extends StatefulWidget {
-  const MyPillsEdit({Key? key});
+  final ValueChanged<String> onPillNameChanged;
+  final ValueChanged<int> onIntervalChanged;
+
+  const MyPillsEdit({
+    Key? key,
+    required this.onPillNameChanged,
+    required this.onIntervalChanged,
+  }) : super(key: key);
 
   @override
   _MyPillsEditState createState() => _MyPillsEditState();
 }
 
 class _MyPillsEditState extends State<MyPillsEdit> {
-  String newName = '';
+  String pillName = '';
   int selectedInterval = 1; // Valor inicial
 
   @override
   Widget build(BuildContext context) {
-    final dataProvider = context.watch<DataProvider>();
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100.0),
@@ -69,7 +72,7 @@ class _MyPillsEditState extends State<MyPillsEdit> {
                         TextField(
                           onChanged: (value) {
                             setState(() {
-                              newName = value;
+                              pillName = value;
                             });
                           },
                           decoration: InputDecoration(
@@ -92,11 +95,13 @@ class _MyPillsEditState extends State<MyPillsEdit> {
                           items: List.generate(24, (index) {
                             return DropdownMenuItem<int>(
                               value: index + 1,
-                              child: Text('Each ${index + 1} hours',
-                                  style: TextStyle(
-                                    color: Colors.blue[900],
-                                    fontSize: 18,
-                                  )),
+                              child: Text(
+                                'Each ${index + 1} hours',
+                                style: TextStyle(
+                                  color: Colors.blue[900],
+                                  fontSize: 18,
+                                ),
+                              ),
                             );
                           }),
                         ),
@@ -109,18 +114,17 @@ class _MyPillsEditState extends State<MyPillsEdit> {
                           height: 100,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Crear una nueva píldora
-                              PillsProvider newPill = PillsProvider(
-                                name: newName,
-                                interval: selectedInterval,
-                              );
+                              // Notificar los cambios a la pantalla anterior (MyPills)
+                              widget.onPillNameChanged(pillName);
+                              widget.onIntervalChanged(selectedInterval);
 
-                              // Agregar la nueva píldora a la lista
-                              dataProvider.addPill(newPill);
+                              // Cerrar la pantalla de edición
+                              Navigator.pop(context);
+
                               // Mostrar mensaje de éxito
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("Pill added!"),
+                                  content: Text("Pill updated!"),
                                 ),
                               );
                             },
